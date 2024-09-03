@@ -97,3 +97,18 @@ fn duck_move<const DIRECTION: Direction>(
             Direction::Right => transform.translation.x += 2. * time.delta().as_millis_f32(),
         });
 }
+
+#[derive(Resource)]
+struct Soundtrack {
+    idx: u32,
+    tracks: Vec<Handle<AudioSource>>,
+}
+
+impl Soundtrack {
+    fn new(track_list: Vec<Handle<AudioSource>>) -> Self {
+        Self {
+            idx: 0,
+            tracks: track_list,
+        }
+    }
+}
