@@ -11,6 +11,8 @@ Licensed under
 
 The Ducky sprite is CC-0 licensed by [Caz Creates Games](https://caz-creates-games.itch.io/ducky-2).
 
+Doom (Original Game Soundtrack) copyright Mick Gordon.
+
 ## Contribution
 
 Unless you explicitly state otherwise, any contribution intentionally submitted
