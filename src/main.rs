@@ -69,6 +69,11 @@ fn setup(mut commands: Commands, asset_server: Res<AssetServer>) {
         "Use WASD to move\n",
         TextStyle::default(),
     ));
+
+    commands.spawn(AudioBundle {
+        source: asset_server.load("ogg/01. Mick Gordon - I. Dogma.ogg"),
+        ..default()
+    });
 }
 
 #[derive(Eq, PartialEq, ConstParamTy)]
