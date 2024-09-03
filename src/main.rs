@@ -69,11 +69,10 @@ fn setup(mut commands: Commands, asset_server: Res<AssetServer>) {
         "Use WASD to move\n",
         TextStyle::default(),
     ));
+}
 
-    commands.spawn(AudioBundle {
-        source: asset_server.load("ogg/01. Mick Gordon - I. Dogma.ogg"),
-        ..default()
-    });
+fn setup_audio(mut commands: Commands, asset_server: Res<AssetServer>) {
+    let ogg_folder = asset_server.load_folder("ogg");
 }
 
 #[derive(Eq, PartialEq, ConstParamTy)]
@@ -88,14 +87,13 @@ fn duck_move<const DIRECTION: Direction>(
     time: Res<Time>,
     mut sprite_positions: Query<&mut Transform, With<Duck>>,
 ) {
-    sprite_positions
-        .iter_mut()
-        .for_each(|mut transform| match DIRECTION {
-            Direction::Up => transform.translation.y += 2. * time.delta().as_millis_f32(),
-            Direction::Down => transform.translation.y -= 2. * time.delta().as_millis_f32(),
-            Direction::Left => transform.translation.x -= 2. * time.delta().as_millis_f32(),
-            Direction::Right => transform.translation.x += 2. * time.delta().as_millis_f32(),
-        });
+    let mut transform = sprite_positions.single_mut();
+    match DIRECTION {
+        Direction::Up => transform.translation.y += 2. * time.delta().as_millis_f32(),
+        Direction::Down => transform.translation.y -= 2. * time.delta().as_millis_f32(),
+        Direction::Left => transform.translation.x -= 2. * time.delta().as_millis_f32(),
+        Direction::Right => transform.translation.x += 2. * time.delta().as_millis_f32(),
+    };
 }
 
 #[derive(Resource)]
