@@ -32,7 +32,7 @@ fn main() {
                 })
                 .set(WindowPlugin {
                     primary_window: Some(Window {
-                        title: "Isaac Nudelman: RTF 329C Interactive Foundation".into(),
+                        title: "Isaac Nudelman: RTF 329C Walking Simulator".into(),
                         ..default()
                     }),
                     ..default()
