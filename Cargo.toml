@@ -18,7 +18,7 @@ mimalloc = "0.1.43"
 
 [dependencies.bevy]
 version = "0.14"
-features = ["symphonia-vorbis"]
+features = ["symphonia-vorbis", "wayland"]
 
 [dependencies.symphonia]
 version = "0.5.4" # XXX: keep in sync w/ version used by bevy's rodio
