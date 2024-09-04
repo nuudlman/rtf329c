@@ -16,6 +16,7 @@ use bevy::{
     },
 };
 
+use bevy::asset::LoadedFolder;
 use std::marker::ConstParamTy;
 
 fn main() {
@@ -71,8 +72,20 @@ fn setup(mut commands: Commands, asset_server: Res<AssetServer>) {
     ));
 }
 
-fn setup_audio(mut commands: Commands, asset_server: Res<AssetServer>) {
+#[derive(Resource)]
+struct SoundFolder {
+    oggs: Handle<LoadedFolder>,
+}
+
+impl SoundFolder {
+    fn new(folder: Handle<LoadedFolder>) -> Self {
+        Self { oggs: folder }
+    }
+}
+
+fn load_sound_folder(mut commands: Commands, asset_server: Res<AssetServer>) {
     let ogg_folder = asset_server.load_folder("ogg");
+    commands.insert_resource(SoundFolder::new(ogg_folder));
 }
 
 #[derive(Eq, PartialEq, ConstParamTy)]
