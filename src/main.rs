@@ -8,7 +8,6 @@ use mimalloc::MiMalloc;
 static GLOBAL: MiMalloc = MiMalloc;
 
 use bevy::{
-    asset::LoadedFolder,
     input::common_conditions::*,
     prelude::*,
     render::{
