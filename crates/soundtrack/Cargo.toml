@@ -1,0 +1,12 @@
+[package]
+name = "soundtrack"
+version = "0.1.0"
+edition = "2021"
+
+[dependencies]
+bevy = { workspace = true }
+
+[dependencies.symphonia]
+version = "0.5.4" # XXX: keep in sync w/ version used by bevy's rodio
+default-features = false
+features = ["opt-simd", "ogg"]

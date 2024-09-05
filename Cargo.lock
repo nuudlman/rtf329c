@@ -3229,11 +3229,11 @@ dependencies = [
 
 [[package]]
 name = "rtf329c"
-version = "1.1.0-dev"
+version = "1.1.0"
 dependencies = [
  "bevy",
  "mimalloc",
- "symphonia",
+ "soundtrack",
 ]
 
 [[package]]
@@ -3435,6 +3435,14 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "dd538fb6910ac1099850255cf94a94df6551fbdd602454387d0adb2d1ca6dead"
 dependencies = [
  "serde",
+]
+
+[[package]]
+name = "soundtrack"
+version = "0.1.0"
+dependencies = [
+ "bevy",
+ "symphonia",
 ]
 
 [[package]]
