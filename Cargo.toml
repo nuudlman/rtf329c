@@ -8,6 +8,7 @@ license = "Apache-2.0"
 mimalloc = "0.1.43"
 bevy = { workspace = true }
 soundtrack = { path = "crates/soundtrack" }
+duck_move = { path = "crates/duck_move" }
 
 [workspace]
 members = ["crates/*"]
