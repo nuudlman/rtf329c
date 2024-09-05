@@ -8,6 +8,7 @@ use mimalloc::MiMalloc;
 static GLOBAL: MiMalloc = MiMalloc;
 
 use bevy::{
+    asset::LoadedFolder,
     input::common_conditions::*,
     prelude::*,
     render::{
@@ -16,8 +17,14 @@ use bevy::{
     },
 };
 
-use bevy::asset::LoadedFolder;
 use std::marker::ConstParamTy;
+
+#[derive(Debug, Copy, Clone, Default, Eq, PartialEq, Hash, States)]
+enum AppState {
+    #[default]
+    Setup,
+    Finished,
+}
 
 fn main() {
     App::new()
@@ -39,7 +46,10 @@ fn main() {
                     ..default()
                 }),
         )
+        .init_state::<AppState>()
         .add_systems(Startup, setup)
+        .add_systems(OnEnter(AppState::Setup), load_sound_folder)
+        .add_systems(OnEnter(AppState::Finished), setup_soundtrack)
         .add_systems(
             Update,
             (
@@ -47,6 +57,8 @@ fn main() {
                 duck_move::<{ Direction::Right }>.run_if(input_pressed(KeyCode::KeyD)),
                 duck_move::<{ Direction::Up }>.run_if(input_pressed(KeyCode::KeyW)),
                 duck_move::<{ Direction::Down }>.run_if(input_pressed(KeyCode::KeyS)),
+                check_sounds_loaded.run_if(in_state(AppState::Setup)),
+                change_track.run_if(in_state(AppState::Finished)),
             ),
         )
         .run();
@@ -54,6 +66,27 @@ fn main() {
 
 #[derive(Component)]
 struct Duck;
+
+#[derive(Resource, Default)]
+struct SoundFolder(Handle<LoadedFolder>);
+
+fn load_sound_folder(mut commands: Commands, asset_server: Res<AssetServer>) {
+    // Load in all the songs from the Doom Soundtrack at once
+    commands.insert_resource(SoundFolder(asset_server.load_folder("ogg")));
+}
+
+fn check_sounds_loaded(
+    mut next_state: ResMut<NextState<AppState>>,
+    sound_folder: Res<SoundFolder>,
+    mut events: EventReader<AssetEvent<LoadedFolder>>,
+) {
+    // If the songs have been loaded, setup everything that depends on them
+    for event in events.read() {
+        if event.is_loaded_with_dependencies(&sound_folder.0) {
+            next_state.set(AppState::Finished);
+        }
+    }
+}
 
 fn setup(mut commands: Commands, asset_server: Res<AssetServer>) {
     commands.spawn(Camera2dBundle::default());
@@ -72,20 +105,20 @@ fn setup(mut commands: Commands, asset_server: Res<AssetServer>) {
     ));
 }
 
-#[derive(Resource)]
-struct SoundFolder {
-    oggs: Handle<LoadedFolder>,
-}
+fn setup_soundtrack(
+    mut commands: Commands,
+    sound_folder: Res<SoundFolder>,
+    loaded_folders: Res<Assets<LoadedFolder>>,
+) {
+    let mut soundtrack = Soundtrack::new();
 
-impl SoundFolder {
-    fn new(folder: Handle<LoadedFolder>) -> Self {
-        Self { oggs: folder }
+    let loaded_folder = loaded_folders.get(&sound_folder.0).unwrap();
+    for handle in loaded_folder.handles.iter() {
+        let track = handle.clone().typed::<AudioSource>();
+        soundtrack.tracks.push(track);
     }
-}
 
-fn load_sound_folder(mut commands: Commands, asset_server: Res<AssetServer>) {
-    let ogg_folder = asset_server.load_folder("ogg");
-    commands.insert_resource(SoundFolder::new(ogg_folder));
+    commands.insert_resource(soundtrack);
 }
 
 #[derive(Eq, PartialEq, ConstParamTy)]
@@ -111,15 +144,47 @@ fn duck_move<const DIRECTION: Direction>(
 
 #[derive(Resource)]
 struct Soundtrack {
-    idx: u32,
+    idx: usize,
     tracks: Vec<Handle<AudioSource>>,
 }
 
 impl Soundtrack {
-    fn new(track_list: Vec<Handle<AudioSource>>) -> Self {
+    fn new() -> Self {
         Self {
             idx: 0,
-            tracks: track_list,
+            tracks: vec![],
         }
+    }
+
+    fn next(&mut self) -> Handle<AudioSource> {
+        let r = self.tracks[self.idx].clone();
+        info!("Current track: {:?}", r);
+
+        if self.idx + 1 >= self.tracks.len() {
+            self.idx = 0;
+        } else {
+            self.idx += 1;
+        }
+
+        r
+    }
+}
+
+fn change_track(
+    mut commands: Commands,
+    mut soundtrack: ResMut<Soundtrack>,
+    active_audio: Query<(&AudioSink, Entity)>,
+) {
+    if active_audio.iter().all(|(audio, _)| audio.empty()) {
+        // despawn all old audio players
+        active_audio
+            .iter()
+            .for_each(|(_, entity)| commands.entity(entity).despawn_recursive());
+
+        // spawn new sound player
+        commands.spawn(AudioBundle {
+            source: soundtrack.next(),
+            ..default()
+        });
     }
 }
