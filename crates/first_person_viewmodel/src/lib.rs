@@ -90,4 +90,16 @@ fn spawn_view_model(
         });
 }
 
-fn move_player() {}
+fn move_player(
+    mut mouse_motion: EventReader<MouseMotion>,
+    mut player: Query<&mut Transform, With<Player>>,
+) {
+    let mut transform = player.single_mut();
+    for motion in mouse_motion.read() {
+        let yaw = -motion.delta.x * 0.003;
+        let pitch = -motion.delta.y * 0.002;
+        // Order of rotations is important, see <https://gamedev.stackexchange.com/a/136175/103059>
+        transform.rotate_y(yaw);
+        transform.rotate_local_x(pitch);
+    }
+}
