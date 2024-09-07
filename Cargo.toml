@@ -9,6 +9,8 @@ mimalloc = "0.1.43"
 bevy = { workspace = true }
 soundtrack = { path = "crates/soundtrack" }
 duck_move = { path = "crates/duck_move" }
+first_person_viewmodel = { path = "crates/first_person_viewmodel" }
+bevy_infinite_grid = "0.13.0"
 
 [workspace]
 members = ["crates/*"]
