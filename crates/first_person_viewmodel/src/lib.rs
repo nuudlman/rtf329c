@@ -1,5 +1,5 @@
 use bevy::{
-    input::mouse::MouseMotion, pbr::NotShadowCaster, prelude::*, render::view::RenderLayers,
+    input::mouse::MouseMotion, pbr::NotShadowCaster,core_pipeline::Skybox, prelude::*, render::view::RenderLayers,
 };
 
 pub struct FirstPersonViewmodelPlugin;
@@ -30,6 +30,7 @@ fn spawn_view_model(
     mut commands: Commands,
     mut meshes: ResMut<Assets<Mesh>>,
     mut materials: ResMut<Assets<StandardMaterial>>,
+    asset_server: Res<AssetServer>
 ) {
     let arm = meshes.add(Cuboid::new(0.1, 0.1, 0.5));
     let arm_material = materials.add(Color::WHITE);
@@ -53,6 +54,15 @@ fn spawn_view_model(
                     .into(),
                     ..default()
                 },
+                EnvironmentMapLight {
+                    diffuse_map: asset_server.load("environment_maps/pisa_diffuse_rgb9e5_zstd.ktx2"),
+                    specular_map: asset_server.load("environment_maps/pisa_specular_rgb9e5_zstd.ktx2"),
+                    intensity: 250.0,
+                },
+                Skybox {
+                    image: asset_server.load("textures/Ryfjallet_cubemap_bc7.ktx2"),
+                    brightness: 1000.0,
+                },
             ));
 
             // Spawn view model camera.
@@ -69,6 +79,11 @@ fn spawn_view_model(
                     }
                     .into(),
                     ..default()
+                },
+                EnvironmentMapLight {
+                    diffuse_map: asset_server.load("environment_maps/pisa_diffuse_rgb9e5_zstd.ktx2"),
+                    specular_map: asset_server.load("environment_maps/pisa_specular_rgb9e5_zstd.ktx2"),
+                    intensity: 250.0,
                 },
                 // Only render objects belonging to the view model.
                 RenderLayers::layer(VIEW_MODEL_RENDER_LAYER),

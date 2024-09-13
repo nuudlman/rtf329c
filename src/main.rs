@@ -12,7 +12,7 @@ use bevy::{
         RenderPlugin,
     },
 };
-use bevy_infinite_grid::*;
+// use bevy_infinite_grid::*;
 // use duck_move::DuckMovePlugin;
 use first_person_viewmodel::FirstPersonViewmodelPlugin;
 use soundtrack::SoundtrackPlugin;
@@ -40,11 +40,11 @@ fn main() {
         .add_plugins(SoundtrackPlugin)
         // .add_plugins(DuckMovePlugin)
         .add_plugins(FirstPersonViewmodelPlugin)
-        .add_plugins(InfiniteGridPlugin)
-        .add_systems(Startup, setup_infinite_grid)
+        // .add_plugins(InfiniteGridPlugin)
+        // .add_systems(Startup, setup_infinite_grid)
         .run();
 }
 
-fn setup_infinite_grid(mut commands: Commands) {
-    commands.spawn(InfiniteGridBundle::default());
-}
+// fn setup_infinite_grid(mut commands: Commands) {
+//     commands.spawn(InfiniteGridBundle::default());
+// }
