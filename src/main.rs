@@ -16,6 +16,7 @@ use bevy::{
 // use duck_move::DuckMovePlugin;
 use fps_player::FPSPlayerPlugin;
 use soundtrack::SoundtrackPlugin;
+use world::WorldPlugin;
 
 fn main() {
     App::new()
@@ -40,6 +41,7 @@ fn main() {
         )
         // .add_plugins(SoundtrackPlugin)
         // .add_plugins(DuckMovePlugin)
+        .add_plugins(WorldPlugin)
         .add_plugins(FPSPlayerPlugin)
         // .add_plugins(InfiniteGridPlugin)
         // .add_systems(Startup, setup_infinite_grid)

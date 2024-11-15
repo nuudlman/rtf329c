@@ -40,16 +40,6 @@ const VIEW_MODEL_RENDER_LAYER: usize = 1;
 const SPAWN_POINT: Vec3 = Vec3::new(0.0, 1.625, 0.0);
 
 fn setup(mut commands: Commands, assets: Res<AssetServer>) {
-    commands.spawn(DirectionalLightBundle {
-        directional_light: DirectionalLight {
-            illuminance: light_consts::lux::FULL_DAYLIGHT,
-            shadows_enabled: true,
-            ..default()
-        },
-        transform: Transform::from_xyz(4.0, 7.0, 5.0).looking_at(Vec3::ZERO, Vec3::Y),
-        ..default()
-    });
-
     // Note that we have two entities for the player
     // One is a "logical" player that handles the physics computation and collision
     // The other is a "render" player that is what is displayed to the user

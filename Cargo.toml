@@ -10,7 +10,7 @@ bevy = { workspace = true }
 soundtrack = { path = "crates/soundtrack" }
 duck_move = { path = "crates/duck_move" }
 fps_player = { path = "crates/fps_player" }
-#bevy_infinite_grid = "0.13.0"
+world = { path = "crates/world" }
 
 [workspace]
 members = ["crates/*"]
