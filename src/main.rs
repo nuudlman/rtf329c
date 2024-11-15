@@ -14,7 +14,7 @@ use bevy::{
 };
 // use bevy_infinite_grid::*;
 // use duck_move::DuckMovePlugin;
-use first_person_viewmodel::FirstPersonViewmodelPlugin;
+use fps_player::FPSPlayerPlugin;
 use soundtrack::SoundtrackPlugin;
 
 fn main() {
@@ -23,6 +23,7 @@ fn main() {
             DefaultPlugins
                 .set(RenderPlugin {
                     render_creation: WgpuSettings {
+                        #[cfg(not(target_os = "macos"))]
                         backends: Some(Backends::VULKAN), // Otherwise dx12/vulkan mix on windows causes annoying errors w/ AMD
                         ..default()
                     }
@@ -37,9 +38,9 @@ fn main() {
                     ..default()
                 }),
         )
-        .add_plugins(SoundtrackPlugin)
+        // .add_plugins(SoundtrackPlugin)
         // .add_plugins(DuckMovePlugin)
-        .add_plugins(FirstPersonViewmodelPlugin)
+        .add_plugins(FPSPlayerPlugin)
         // .add_plugins(InfiniteGridPlugin)
         // .add_systems(Startup, setup_infinite_grid)
         .run();

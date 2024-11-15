@@ -9,7 +9,7 @@ mimalloc = "0.1.43"
 bevy = { workspace = true }
 soundtrack = { path = "crates/soundtrack" }
 duck_move = { path = "crates/duck_move" }
-first_person_viewmodel = { path = "crates/first_person_viewmodel" }
+fps_player = { path = "crates/fps_player" }
 #bevy_infinite_grid = "0.13.0"
 
 [workspace]
@@ -18,6 +18,10 @@ members = ["crates/*"]
 [workspace.dependencies.bevy]
 version = "0.14"
 features = ["symphonia-vorbis", "wayland"]
+
+[workspace.dependencies.bevy_rapier3d]
+version = "0.27"
+features = ["enhanced-determinism"]
 
 # Enable high optimizations for dependencies (incl. Bevy), but not for our code:
 [profile.dev.package."*"]

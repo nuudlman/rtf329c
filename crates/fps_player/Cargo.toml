@@ -1,0 +1,9 @@
+[package]
+name = "fps_player"
+version = "0.1.0"
+edition = "2021"
+
+[dependencies]
+bevy = { workspace = true }
+bevy_rapier3d = { workspace = true }
+bevy_fps_controller = "0.3"
