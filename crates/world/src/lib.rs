@@ -26,9 +26,9 @@ fn setup(
     });
 
     // Add floor
-    let floor_raw = Plane3d::new(Vec3::Y, Vec2::splat(10.0));
-    let floor_mesh = floor_raw.clone().mesh().build();
-    let floor = meshes.add(floor_raw);
+    let floor_raw = Plane3d::new(Vec3::Y, Vec2::splat(10000.0));
+    let floor_mesh = floor_raw.mesh().build();
+    let floor = meshes.add(floor_mesh.clone());
     let material = materials.add(Color::WHITE);
     commands.spawn((
         Collider::from_bevy_mesh(&floor_mesh, &ComputedColliderShape::TriMesh).unwrap(),

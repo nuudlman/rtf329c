@@ -12,8 +12,6 @@ use bevy::{
         RenderPlugin,
     },
 };
-// use bevy_infinite_grid::*;
-// use duck_move::DuckMovePlugin;
 use fps_player::FPSPlayerPlugin;
 use soundtrack::SoundtrackPlugin;
 use world::WorldPlugin;
@@ -43,11 +41,5 @@ fn main() {
         // .add_plugins(DuckMovePlugin)
         .add_plugins(WorldPlugin)
         .add_plugins(FPSPlayerPlugin)
-        // .add_plugins(InfiniteGridPlugin)
-        // .add_systems(Startup, setup_infinite_grid)
         .run();
 }
-
-// fn setup_infinite_grid(mut commands: Commands) {
-//     commands.spawn(InfiniteGridBundle::default());
-// }
